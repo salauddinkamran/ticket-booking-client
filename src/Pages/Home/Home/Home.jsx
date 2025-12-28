@@ -1,10 +1,13 @@
-import React from 'react';
+import React from "react";
+import Container from "../../Shared/Container";
 
 const Home = () => {
   return (
-    <div className='p-5'>
-      <h1 className='text-4xl font-bold'>This Is Home Page</h1>
-    </div>
+    <Container>
+      <div className="p-5">
+        <h1 className="text-4xl font-bold">This Is Home Page</h1>
+      </div>
+    </Container>
   );
 };
 
