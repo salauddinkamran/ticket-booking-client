@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import useAuth from "../../../hooks/useAuth";
 import { data, useLocation, useNavigate } from "react-router";
 import toast from "react-hot-toast";
+import axios from "axios";
 
 const Register = () => {
   const { registerUser, loading, user, updateUserProfile } = useAuth();
@@ -19,18 +20,27 @@ const Register = () => {
   const onSubmit = async (data) => {
     const { name, image, email, passowrd } = data;
     const imageFile = image[0];
-    console.log(imageFile);
+    const fromData = new FormData();
+    fromData.append("image", imageFile);
+
     try {
+      const {data} = await axios.post(
+        `https://api.imgbb.com/1/upload?key=${
+          import.meta.env.VITE_IMGBB_API_KEY
+        }`,
+        fromData
+      );
+      const imageURL = data?.data?.display_url;
+
       // 1. User Registration
       const result = await registerUser(email, passowrd);
       // 2. Generate image url from selected file
       // 3. Save username & profile photo
       await updateUserProfile(
-        name,
-        "https://lh3.googleusercontent.com/ogw/AF2bZygdgOBc141KydGzH1nZ55OOQiFxYtXh29Ahnm-yMUlTGdU=s32-c-mo"
+        name, imageURL
       );
       toast.success("Signup successful");
-      navigate(location?.state || "/")
+      navigate(location?.state || "/");
       console.log(result);
     } catch (err) {
       console.log(err);
