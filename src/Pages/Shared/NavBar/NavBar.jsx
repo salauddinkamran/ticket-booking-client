@@ -2,9 +2,17 @@ import React from "react";
 import { NavLink } from "react-router";
 import Container from "../Container";
 import useAuth from "../../../hooks/useAuth";
+import { auth } from "../../../firebase/firebase.init";
 
 const NavBar = () => {
-  const { user } = useAuth();
+  const { user, signOutUser } = useAuth();
+  const handleLogout = () => {
+    signOutUser(auth)
+      .then()
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
   const links = (
     <>
       <li>
@@ -68,7 +76,8 @@ const NavBar = () => {
                 <div className="w-10 rounded-full">
                   <img
                     alt="Tailwind CSS Navbar component"
-                    src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                    // src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                    src={user?.photoURL}
                   />
                 </div>
               </div>
@@ -79,19 +88,15 @@ const NavBar = () => {
                 <li>
                   <a className="justify-between">
                     Profile
-                    <span className="badge">New</span>
                   </a>
                 </li>
                 <li>
-                  <a>Settings</a>
-                </li>
-                <li>
-                  <a>Logout</a>
+                  <a onClick={handleLogout}>Logout</a>
                 </li>
               </ul>
             </div>
           ) : (
-            <div>
+            <div className="flex gap-5">
               {" "}
               <NavLink className="font-bold" to="login">
                 Login

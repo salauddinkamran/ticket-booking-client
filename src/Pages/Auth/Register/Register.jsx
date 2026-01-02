@@ -5,6 +5,7 @@ import useAuth from "../../../hooks/useAuth";
 import { data, useLocation, useNavigate } from "react-router";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { auth } from "../../../firebase/firebase.init";
 
 const Register = () => {
   const { registerUser, loading, user, updateUserProfile } = useAuth();
@@ -39,6 +40,8 @@ const Register = () => {
       await updateUserProfile(
         name, imageURL
       );
+
+
       toast.success("Signup successful");
       navigate(location?.state || "/");
       console.log(result);
