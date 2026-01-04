@@ -5,6 +5,7 @@ import About from "../Pages/Home/About/About";
 import Register from "../Pages/Auth/Register/Register";
 import Login from "../Pages/Auth/Login/Login";
 import Profile from "../Pages/Profile/Profile";
+import Error from "../Components/Error/Error";
 
 export const Router = createBrowserRouter([
   {
@@ -31,6 +32,10 @@ export const Router = createBrowserRouter([
         path: "/profile",
         Component: Profile,
       },
+      {
+        path: "/*",
+        Component: Error
+      }
     ],
   },
 ]);

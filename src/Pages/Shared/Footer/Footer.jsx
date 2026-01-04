@@ -1,29 +1,66 @@
 import React from "react";
 import Container from "../Container";
+import { Link } from "react-router";
+import logo from "../../../assets/logo-2.png"
+import useAuth from "../../../hooks/useAuth";
+import { MdEmail } from "react-icons/md";
+import { FaFacebook, FaPhoneAlt } from "react-icons/fa";
 
 const Footer = () => {
+  const { user } = useAuth();
   return (
     <Container>
-      <footer className="footer sm:footer-horizontal bg-base-200 text-base-content p-10">
+      <footer className="footer sm:footer-horizontal bg-base-200 text-base-content p-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         <nav>
-          <h6 className="footer-title">Services</h6>
-          <a className="link link-hover">Branding</a>
+          {/* <h6 className="footer-title">Columns 1</h6> */}
+
+          {/*<a className="link link-hover">Branding</a>
           <a className="link link-hover">Design</a>
           <a className="link link-hover">Marketing</a>
-          <a className="link link-hover">Advertisement</a>
+          <a className="link link-hover">Advertisement</a> */}
+          {/* <h6 className="footer-title">Column 1</h6> */}
+          <Link to="/" className="text-lg font-bold">
+            <img src={logo} className="w-20" alt="" />
+          </Link>
+          <p className="text-base font-medium text-gray-600">
+            Compare routes, prices, and schedules in seconds, choose your seat,
+            and confirm your ticket securely—anytime, anywhere. Travel made
+            fast, easy, and stress-free.
+          </p>
         </nav>
         <nav>
-          <h6 className="footer-title">Company</h6>
-          <a className="link link-hover">About us</a>
-          <a className="link link-hover">Contact</a>
-          <a className="link link-hover">Jobs</a>
-          <a className="link link-hover">Press kit</a>
+          <h6 className="text-lg font-bold text-black">Company</h6>
+          <Link to="/" className="link link-hover text-base font-medium text-gray-600">
+            Home
+          </Link>
+          <Link
+            to="/all-ticket"
+            className="link link-hover text-base font-medium text-gray-600"
+          >
+            All Tickets
+          </Link>
+          <Link to="/contact" className="link link-hover text-base font-medium text-gray-600">
+            Contact Us
+          </Link>
+          <Link to="/about" className="link link-hover text-base font-medium text-gray-600">
+            About
+          </Link>
         </nav>
         <nav>
-          <h6 className="footer-title">Legal</h6>
-          <a className="link link-hover">Terms of use</a>
-          <a className="link link-hover">Privacy policy</a>
-          <a className="link link-hover">Cookie policy</a>
+          <h6 className="text-lg font-bold text-black">Social</h6>
+
+          <a className="link link-hover flex items-center gap-2 text-base text-gray-600">
+            <MdEmail />
+            <span>{user.email}</span>
+          </a>
+          <a className="link link-hover flex items-center gap-2 text-base text-gray-600">
+            <FaPhoneAlt />
+            <span>111-222-1234</span>
+          </a>
+          <a className="link link-hover flex items-center gap-2 text-base text-gray-600">
+            <FaFacebook />
+            <span>www.facebook.com</span>
+          </a>
         </nav>
         <form>
           <h6 className="footer-title">Newsletter</h6>
@@ -40,6 +77,7 @@ const Footer = () => {
           </fieldset>
         </form>
       </footer>
+      <p className="bg-black text-white text-center py-5">© 2025 TicketBari.All rights reserved.</p>
     </Container>
   );
 };

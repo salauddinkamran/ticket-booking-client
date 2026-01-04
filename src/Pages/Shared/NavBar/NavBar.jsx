@@ -1,14 +1,18 @@
 import React from "react";
-import { NavLink } from "react-router";
+import { Link, NavLink } from "react-router";
 import Container from "../Container";
 import useAuth from "../../../hooks/useAuth";
 import { auth } from "../../../firebase/firebase.init";
+import toast from "react-hot-toast";
+import logo from "../../../assets/logo-2.png"
 
 const NavBar = () => {
   const { user, signOutUser } = useAuth();
   const handleLogout = () => {
     signOutUser(auth)
-      .then()
+      .then(() => {
+        toast.success("Signout successfully!");
+      })
       .catch((error) => {
         console.log(error.message);
       });
@@ -19,19 +23,19 @@ const NavBar = () => {
         <NavLink to="">Home</NavLink>
       </li>
       <li>
-        <NavLink to="">All Ticket</NavLink>
+        <NavLink to="/all-ticket">All Ticket</NavLink>
       </li>
       <li>
         <NavLink to="/about">About</NavLink>
       </li>
       <li>
-        <NavLink to="">Deshboard</NavLink>
+        <NavLink to="/deshboard">Deshboard</NavLink>
       </li>
     </>
   );
   return (
     <Container>
-      <div className="navbar bg-base-100 shadow-sm">
+      <nav className="navbar bg-base-100 shadow-sm">
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -58,7 +62,9 @@ const NavBar = () => {
               {links}
             </ul>
           </div>
-          <a className="btn btn-ghost text-xl font-bold">Online Ticket</a>
+          <Link to="/" className="cursor-pointer text-xl font-bold">
+            <img className="w-20" src={logo} alt="" />
+          </Link>
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1 font-bold flex gap-5">
@@ -76,22 +82,29 @@ const NavBar = () => {
                 <div className="w-10 rounded-full">
                   <img
                     alt="Tailwind CSS Navbar component"
-                    // src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                    src={user?.photoURL || "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"}
+                    src={
+                      user?.photoURL ||
+                      "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                    }
                   />
                 </div>
               </div>
               <ul
                 tabIndex="-1"
-                className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+                className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-4 shadow space-y-3"
               >
                 <li>
-                  <NavLink to="/profile" className="justify-between text-base">
+                  <NavLink to="/profile" className="text-base btn btn-primary">
                     Profile
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink onClick={handleLogout} className="text-base">Logout</NavLink>
+                  <NavLink
+                    onClick={handleLogout}
+                    className="text-base btn btn-primary"
+                  >
+                    Logout
+                  </NavLink>
                 </li>
               </ul>
             </div>
@@ -107,7 +120,7 @@ const NavBar = () => {
             </div>
           )}
         </div>
-      </div>
+      </nav>
     </Container>
   );
 };

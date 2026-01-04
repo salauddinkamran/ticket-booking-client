@@ -2,3 +2,7 @@
 @plugin "daisyui" {
   themes: light --default;
 }
+
+nav a.active {
+  @apply bg-primary text-white
+}
