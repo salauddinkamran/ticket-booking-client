@@ -6,9 +6,10 @@ import { data, useLocation, useNavigate } from "react-router";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { auth } from "../../../firebase/firebase.init";
+import { updateProfile } from "firebase/auth";
 
 const Register = () => {
-  const { registerUser, loading, user, updateUserProfile } = useAuth();
+  const { registerUser, loading, user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const {
@@ -25,23 +26,28 @@ const Register = () => {
     fromData.append("image", imageFile);
 
     try {
-      const {data} = await axios.post(
+      const { data } = await axios.post(
         `https://api.imgbb.com/1/upload?key=${
           import.meta.env.VITE_IMGBB_API_KEY
         }`,
         fromData
       );
-      const imageURL = data?.data?.display_url;
+      const photoURL = data?.data?.display_url;
 
       // 1. User Registration
-      const result = await registerUser(email, passowrd);
       // 2. Generate image url from selected file
       // 3. Save username & profile photo
-      await updateUserProfile(
-        name, imageURL
-      );
 
+      const updateUserProfile = (name, photoURL) => {
+        return updateProfile(auth.currentUser, {
+          displayName: name,
+          photoURL: photoURL,
+        });
+      };
 
+      const result = await registerUser(email, passowrd);
+      await updateUserProfile(name, photoURL);
+      await result.user.reload();
       toast.success("Signup successful");
       navigate(location?.state || "/");
       console.log(result);

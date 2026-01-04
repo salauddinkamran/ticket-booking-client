@@ -20,7 +20,7 @@ const Login = () => {
       .then((result) => {
         toast.success("Login successfully!");
         console.log(result.user);
-        navigate(location?.state || "/")
+        navigate(location?.state || "/");
       })
       .catch((error) => {
         toast.error(error?.message);
@@ -44,6 +44,9 @@ const Login = () => {
                     placeholder="Email"
                     {...register("email", { required: "Email is required" })}
                   />
+                  {
+                    errors.email?.type === "required" && <p className="text-red-500 text-xs">Thsi email field is required</p>
+                  }
                   <label className="label text-lg">Password</label>
                   <input
                     type="password"
@@ -52,8 +55,15 @@ const Login = () => {
                     placeholder="Password"
                     {...register("password", {
                       required: "password is required",
+                      pattern: {
+                        value:
+                          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/,
+                        message:
+                          "Password must contain uppercase, lowercase, number, special character, and be at least 6 characters long.",
+                      },
                     })}
                   />
+                  {errors.password && <p className="text-red-500 text-xs">{errors.password.message}</p>}
                   <div>
                     <a className="link link-hover">Forgot password?</a>
                   </div>

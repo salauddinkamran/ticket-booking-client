@@ -77,7 +77,7 @@ const NavBar = () => {
                   <img
                     alt="Tailwind CSS Navbar component"
                     // src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                    src={user?.photoURL}
+                    src={user?.photoURL || "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"}
                   />
                 </div>
               </div>
@@ -86,12 +86,12 @@ const NavBar = () => {
                 className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
               >
                 <li>
-                  <a className="justify-between">
+                  <NavLink to="/profile" className="justify-between text-base">
                     Profile
-                  </a>
+                  </NavLink>
                 </li>
                 <li>
-                  <a onClick={handleLogout}>Logout</a>
+                  <NavLink onClick={handleLogout} className="text-base">Logout</NavLink>
                 </li>
               </ul>
             </div>
