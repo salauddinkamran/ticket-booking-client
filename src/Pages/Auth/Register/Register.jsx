@@ -10,7 +10,7 @@ import { imageUpload } from "../../../utils";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 const Register = () => {
-  const { registerUser, loading, user } = useAuth();
+  const { registerUser } = useAuth();
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -24,17 +24,9 @@ const Register = () => {
   const onSubmit = async (data) => {
     const { name, image, email, passowrd } = data;
     const imageFile = image[0];
-    // const fromData = new FormData();
-    // fromData.append("image", imageFile);
 
     try {
-      // const { data } = await axios.post(
-      //   `https://api.imgbb.com/1/upload?key=${
-      //     import.meta.env.VITE_IMGBB_API_KEY
-      //   }`,
-      //   fromData
-      // );
-      // const photoURL = data?.data?.display_url;
+
       const photoURL = await imageUpload(imageFile);
 
       // 1. User Registration

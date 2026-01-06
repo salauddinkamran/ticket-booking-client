@@ -4,10 +4,11 @@ import Container from "../Container";
 import useAuth from "../../../hooks/useAuth";
 import { auth } from "../../../firebase/firebase.init";
 import toast from "react-hot-toast";
-import logo from "../../../assets/logo-2.png"
+import logo from "../../../assets/logo-2.png";
+import { PulseLoader } from "react-spinners";
 
 const NavBar = () => {
-  const { user, signOutUser } = useAuth();
+  const { user, signOutUser, loading } = useAuth();
   const handleLogout = () => {
     signOutUser(auth)
       .then(() => {
@@ -29,7 +30,7 @@ const NavBar = () => {
         <NavLink to="/about">About</NavLink>
       </li>
       <li>
-        <NavLink to="/deshboard">Deshboard</NavLink>
+        <NavLink to="/dashboard">Deshboard</NavLink>
       </li>
     </>
   );
@@ -72,7 +73,9 @@ const NavBar = () => {
           </ul>
         </div>
         <div className="navbar-end flex gap-5">
-          {user ? (
+          {loading ? (
+            <PulseLoader />
+          ) : user ? (
             <div className="dropdown dropdown-end z-30">
               <div
                 tabIndex={0}
