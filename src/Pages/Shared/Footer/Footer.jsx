@@ -51,7 +51,7 @@ const Footer = () => {
 
           <a className="link link-hover flex items-center gap-2 text-base text-gray-600">
             <MdEmail />
-            <span>{user.email}</span>
+            <span>{user?.email || "abc123@gmail.com"}</span>
           </a>
           <a className="link link-hover flex items-center gap-2 text-base text-gray-600">
             <FaPhoneAlt />

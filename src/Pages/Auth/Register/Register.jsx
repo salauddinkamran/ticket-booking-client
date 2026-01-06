@@ -1,15 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import Container from "../../Shared/Container";
 import { useForm } from "react-hook-form";
 import useAuth from "../../../hooks/useAuth";
-import { data, useLocation, useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import toast from "react-hot-toast";
-import axios from "axios";
 import { auth } from "../../../firebase/firebase.init";
 import { updateProfile } from "firebase/auth";
+import { imageUpload } from "../../../utils";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 const Register = () => {
   const { registerUser, loading, user } = useAuth();
+  const [show, setShow] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const {
@@ -22,17 +24,18 @@ const Register = () => {
   const onSubmit = async (data) => {
     const { name, image, email, passowrd } = data;
     const imageFile = image[0];
-    const fromData = new FormData();
-    fromData.append("image", imageFile);
+    // const fromData = new FormData();
+    // fromData.append("image", imageFile);
 
     try {
-      const { data } = await axios.post(
-        `https://api.imgbb.com/1/upload?key=${
-          import.meta.env.VITE_IMGBB_API_KEY
-        }`,
-        fromData
-      );
-      const photoURL = data?.data?.display_url;
+      // const { data } = await axios.post(
+      //   `https://api.imgbb.com/1/upload?key=${
+      //     import.meta.env.VITE_IMGBB_API_KEY
+      //   }`,
+      //   fromData
+      // );
+      // const photoURL = data?.data?.display_url;
+      const photoURL = await imageUpload(imageFile);
 
       // 1. User Registration
       // 2. Generate image url from selected file
@@ -116,22 +119,31 @@ const Register = () => {
                     </p>
                   )}
                   <label className="label text-lg">Password</label>
-                  <input
-                    type="password"
-                    name="passowrd"
-                    id="passowrd"
-                    className="input"
-                    placeholder="Password"
-                    {...register("passowrd", {
-                      required: "Passowrd is required",
-                      pattern: {
-                        value:
-                          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/,
-                        message:
-                          "Password must contain uppercase, lowercase, number, special character, and be at least 6 characters long.",
-                      },
-                    })}
-                  />
+                  <div className="relative">
+                    <input
+                      type={show ? "text" : "password"}
+                      name="passowrd"
+                      id="passowrd"
+                      className="input"
+                      placeholder="Password"
+                      {...register("passowrd", {
+                        required: "Passowrd is required",
+                        pattern: {
+                          value:
+                            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/,
+                          message:
+                            "Password must contain uppercase, lowercase, number, special character, and be at least 6 characters long.",
+                        },
+                      })}
+                    />
+                    <span
+                      className="absolute top-3 right-3 cursor-pointer text-lg"
+                      onClick={() => setShow(!show)}
+                    >
+                      {show ? <FaRegEye /> : <FaRegEyeSlash />}
+                    </span>
+                  </div>
+
                   {errors.passowrd && (
                     <p className="text-red-500 text-xs mt-1">
                       {errors.passowrd.message}

@@ -94,29 +94,29 @@ const NavBar = () => {
                 className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-4 shadow space-y-3"
               >
                 <li>
-                  <NavLink to="/profile" className="text-base btn btn-primary">
+                  <Link to="/profile" className="text-base btn btn-primary">
                     Profile
-                  </NavLink>
+                  </Link>
                 </li>
                 <li>
-                  <NavLink
+                  <Link
                     onClick={handleLogout}
                     className="text-base btn btn-primary"
                   >
                     Logout
-                  </NavLink>
+                  </Link>
                 </li>
               </ul>
             </div>
           ) : (
             <div className="flex gap-5">
               {" "}
-              <NavLink className="font-bold" to="login">
+              <Link className="font-bold" to="login">
                 Login
-              </NavLink>
-              <NavLink className="font-bold" to="register">
+              </Link>
+              <Link className="font-bold" to="register">
                 Register
-              </NavLink>
+              </Link>
             </div>
           )}
         </div>

@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import Container from "../../Shared/Container";
 import useAuth from "../../../hooks/useAuth";
 import toast from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 const Login = () => {
   const { signInUser } = useAuth();
+  const [show, setShow] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const {
@@ -44,26 +46,41 @@ const Login = () => {
                     placeholder="Email"
                     {...register("email", { required: "Email is required" })}
                   />
-                  {
-                    errors.email?.type === "required" && <p className="text-red-500 text-xs">Thsi email field is required</p>
-                  }
+                  {errors.email?.type === "required" && (
+                    <p className="text-red-500 text-xs">
+                      Thsi email field is required
+                    </p>
+                  )}
                   <label className="label text-lg">Password</label>
-                  <input
-                    type="password"
-                    className="input"
-                    // name="password"
-                    placeholder="Password"
-                    {...register("password", {
-                      required: "password is required",
-                      pattern: {
-                        value:
-                          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/,
-                        message:
-                          "Password must contain uppercase, lowercase, number, special character, and be at least 6 characters long.",
-                      },
-                    })}
-                  />
-                  {errors.password && <p className="text-red-500 text-xs">{errors.password.message}</p>}
+                  <div className="relative">
+                    <input
+                      type={show ? "text" : "password"}
+                      className="input"
+                      // name="password"
+                      placeholder="Password"
+                      {...register("password", {
+                        required: "password is required",
+                        pattern: {
+                          value:
+                            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/,
+                          message:
+                            "Password must contain uppercase, lowercase, number, special character, and be at least 6 characters long.",
+                        },
+                      })}
+                    />
+                    <span
+                      className="absolute top-3 right-3 text-lg cursor-pointer"
+                      onClick={() => setShow(!show)}
+                    >
+                      {show ? <FaRegEye /> : <FaRegEyeSlash />}
+                    </span>
+                  </div>
+
+                  {errors.password && (
+                    <p className="text-red-500 text-xs">
+                      {errors.password.message}
+                    </p>
+                  )}
                   <div>
                     <a className="link link-hover">Forgot password?</a>
                   </div>
