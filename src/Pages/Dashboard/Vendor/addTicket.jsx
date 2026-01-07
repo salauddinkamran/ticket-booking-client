@@ -2,7 +2,7 @@ import React from "react";
 import Container from "../../Shared/Container";
 import { useForm } from "react-hook-form";
 
-const addTicket = () => {
+const AddTicket = () => {
   const {
     register,
     handleSubmit,
@@ -12,10 +12,11 @@ const addTicket = () => {
   const onSubmit = async (data) => {
     console.log(data);
   };
+  const items = ["Free cancellation", "AC Seat", "Meal included"];
   return (
     <Container>
       <div className="h-screen flex justify-center items-center">
-        <div className="w-6/12 mx-auto">
+        <div className="md:w-6/12 mx-auto">
           <h1 className="text-5xl font-bold text-center mb-5">Add Ticket</h1>
           <form
             className="border border-gray-400 p-5 rounded-lg"
@@ -30,7 +31,7 @@ const addTicket = () => {
                   type="file"
                   id="image"
                   className="file-input w-full text-base"
-                  {...register("image", { require: "Image is requaired" })}
+                  {...register("image", { required: "Image is requaired" })}
                 />
                 {errors.image && (
                   <p className="text-red-400 text-xs">{errors.image.message}</p>
@@ -42,9 +43,9 @@ const addTicket = () => {
                   type="text"
                   id="title"
                   className="input w-full text-base"
-                  placeholder="Enter Your Name Here"
+                  placeholder="Enter Your Location Name Here"
                   {...register("title", {
-                    required: "Title is required",
+                    required: "Location title is required",
                     maxLength: {
                       value: 20,
                       message: "Title cannot be tooo long",
@@ -112,10 +113,10 @@ const addTicket = () => {
                   </p>
                 )}
               </div>
-              <div>
-                <label className="label text-lg mb-2">Perks</label>
+              <div className="flex gap-4 mt-3">
+                {/* <label className="label text-lg mb-2">Perks</label>
                 <select
-                  className="w-full px-4 py-3 border border-gray-400 rounded-md"
+                  className="w-full px-4 py-3 border border-gray-400 rounded-md text-base"
                   required
                   {...register("perks", { required: "Perks is requaired" })}
                 >
@@ -123,38 +124,27 @@ const addTicket = () => {
                   <option value="Free_cancellation">Free cancellation</option>
                   <option value="AC_Seat">AC Seat</option>
                   <option value="Meal_included">Meal included</option>
-                </select>
+                </select> */}
+                {/* <label className="label text-base">
+                  <input type="checkbox"  className="checkbox" />
+                  Free cancellation
+                </label>
+                <label className="label text-base">
+                  <input type="checkbox"  className="checkbox" />
+                  AC Seat
+                </label>
+                <label className="label text-base">
+                  <input type="checkbox"  className="checkbox" />
+                  Meal included
+                </label> */}
+                <label className="label text-base">
+                  <input type="checkbox" className="checkbox" />
+                  Meal included
+                </label>
                 {errors.perks && (
                   <p className="text-red-400 text-xs">{errors.perks.message}</p>
                 )}
               </div>
-
-              {/* <label className="label text-lg">Pick a file</label>
-              <input
-                type="file"
-                id="image"
-                className="file-input w-full"
-                {...register("image")}
-              />
-              <label className="label text-lg">Email</label>
-              <input
-                type="email"
-                id="email"
-                className="input w-full"
-                placeholder="Enter Your Email"
-                {...register("email", {
-                  required: "Email is required",
-                  pattern: {
-                    value: /[a-zA-Z0–9._%+-]+@[a-zA-Z0–9.-]+\.[a-zA-Z]{2,}$/,
-                    message: "Please enter a valid email address",
-                  },
-                })}
-              />
-              {errors.email && (
-                <p className="text-red-500 text-xs mt-1">
-                  {errors.email.message}
-                </p>
-              )} */}
               <button className="btn btn-neutral mt-4">Add Ticket</button>
             </fieldset>
           </form>
@@ -164,4 +154,4 @@ const addTicket = () => {
   );
 };
 
-export default addTicket;
+export default AddTicket;

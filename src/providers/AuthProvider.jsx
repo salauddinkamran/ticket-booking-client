@@ -32,7 +32,7 @@ const AuthProvider = ({ children }) => {
     return signOut(auth);
   };
   const updateUserProfile = (profile) => {
-    return updateProfile(auth.currentUser, profile);
+    return updateProfile(ausuth.currentUser, profile);
   };
 
   useEffect(() => {

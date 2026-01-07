@@ -6,8 +6,9 @@ import Register from "../Pages/Auth/Register/Register";
 import Login from "../Pages/Auth/Login/Login";
 import Profile from "../Pages/Profile/Profile";
 import Error from "../Components/Error/Error";
-import addTicket from "../Pages/Dashboard/Vendor/addTicket";
 import DashboardLayout from "../layouts/DashboardLayout";
+import PrivetRoute from "./PrivetRoute";
+import AddTicket from "../Pages/Dashboard/Vendor/addTicket";
 
 export const Router = createBrowserRouter([
   {
@@ -47,12 +48,19 @@ export const Router = createBrowserRouter([
       {
         index: true,
         element: (
-          <h3 className="text-5xl font-medium p-5">This Is Deshboard</h3>
+          <PrivetRoute>
+            <h3 className="text-5xl font-medium p-5">This Is Deshboard</h3>
+          </PrivetRoute>
         ),
       },
       {
         path: "addTicket",
-        Component: addTicket,
+        element: (
+          <PrivetRoute>
+            <AddTicket></AddTicket>
+          </PrivetRoute>
+        ),
+        // Component: addTicket,
       },
     ],
   },
