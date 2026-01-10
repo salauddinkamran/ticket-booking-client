@@ -8,7 +8,7 @@ import Profile from "../Pages/Profile/Profile";
 import Error from "../Components/Error/Error";
 import DashboardLayout from "../layouts/DashboardLayout";
 import PrivetRoute from "./PrivetRoute";
-import AddTicket from "../Pages/Dashboard/Vendor/addTicket";
+import AddTicket from "../Pages/Dashboard/Vendor/AddTicket";
 
 export const Router = createBrowserRouter([
   {

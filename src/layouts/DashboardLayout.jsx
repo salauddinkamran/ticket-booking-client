@@ -74,7 +74,7 @@ const DashboardLayout = () => {
               </li>
               <li>
                 <Link
-                  to="/dashboard/addTicket"
+                  to="/dashboard/AddTicket"
                   className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                   data-tip="Add Ticket"
                 >

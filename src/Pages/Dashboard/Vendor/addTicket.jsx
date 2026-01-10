@@ -1,8 +1,11 @@
 import React from "react";
 import Container from "../../Shared/Container";
 import { useForm } from "react-hook-form";
+import { imageUpload } from "../../../utils";
+import useAuth from "../../../hooks/useAuth";
 
 const AddTicket = () => {
+  const { user } = useAuth();
   const {
     register,
     handleSubmit,
@@ -10,7 +13,23 @@ const AddTicket = () => {
     formState: { errors },
   } = useForm();
   const onSubmit = async (data) => {
-    console.log(data);
+    const { image, title, transport, price, quantity, perks } = data;
+    const imageFile = image[0];
+    const imageURL = await imageUpload(imageFile);
+    const ticketData = {
+      image: imageURL,
+      title,
+      transport,
+      price: Number(price),
+      quantity: Number(quantity),
+      perks,
+      seller: {
+        image: user?.photoURL,
+        name: user?.displayName,
+        email: user?.email,
+      },
+    };
+    console.table(ticketData);
   };
   const items = ["Free cancellation", "AC Seat", "Meal included"];
   return (
@@ -23,7 +42,7 @@ const AddTicket = () => {
             onSubmit={handleSubmit(onSubmit)}
           >
             <fieldset className="fieldset">
-              <div>
+              <div className="mb-2">
                 <label className="label text-lg mb-2">
                   Upload transport image
                 </label>
@@ -34,10 +53,12 @@ const AddTicket = () => {
                   {...register("image", { required: "Image is requaired" })}
                 />
                 {errors.image && (
-                  <p className="text-red-400 text-xs">{errors.image.message}</p>
+                  <p className="text-red-400 text-xs mt-2">
+                    {errors.image.message}
+                  </p>
                 )}
               </div>
-              <div>
+              <div className="mb-2">
                 <label className="label text-lg mb-2">Location title</label>
                 <input
                   type="text"
@@ -53,12 +74,12 @@ const AddTicket = () => {
                   })}
                 />
                 {errors.title && (
-                  <p className="text-red-400 text-xs mt-1">
+                  <p className="text-red-400 text-xs mt-2">
                     {errors.title.message}
                   </p>
                 )}
               </div>
-              <div>
+              <div className="mb-2">
                 <label className="label text-lg mb-2">Transport Type</label>
                 <select
                   required
@@ -74,12 +95,12 @@ const AddTicket = () => {
                   <option value="Launch">Launch</option>
                 </select>
                 {errors.transport && (
-                  <p className="text-red-400 text-xs">
+                  <p className="text-red-400 text-xs mt-2">
                     {errors.transport.message}
                   </p>
                 )}
               </div>
-              <div>
+              <div className="mb-2">
                 <label className="label text-lg mb-2">Ticket Price</label>
                 <input
                   type="number"
@@ -92,10 +113,12 @@ const AddTicket = () => {
                   })}
                 />
                 {errors.price && (
-                  <p className="text-red-400 text-xs">{errors.price.message}</p>
+                  <p className="text-red-400 text-xs mt-2">
+                    {errors.price.message}
+                  </p>
                 )}
               </div>
-              <div>
+              <div className="mb-2">
                 <label className="label text-lg mb-2">Ticket quantity</label>
                 <input
                   type="number"
@@ -108,12 +131,12 @@ const AddTicket = () => {
                   })}
                 />
                 {errors.quantity && (
-                  <p className="text-red-400 text-xs">
+                  <p className="text-red-400 text-xs mt-2">
                     {errors.quantity.message}
                   </p>
                 )}
               </div>
-              <div className="flex gap-4 mt-3">
+              <div className="mt-2">
                 {/* <label className="label text-lg mb-2">Perks</label>
                 <select
                   className="w-full px-4 py-3 border border-gray-400 rounded-md text-base"
@@ -125,24 +148,23 @@ const AddTicket = () => {
                   <option value="AC_Seat">AC Seat</option>
                   <option value="Meal_included">Meal included</option>
                 </select> */}
-                {/* <label className="label text-base">
-                  <input type="checkbox"  className="checkbox" />
-                  Free cancellation
-                </label>
-                <label className="label text-base">
-                  <input type="checkbox"  className="checkbox" />
-                  AC Seat
-                </label>
-                <label className="label text-base">
-                  <input type="checkbox"  className="checkbox" />
-                  Meal included
-                </label> */}
-                <label className="label text-base">
-                  <input type="checkbox" className="checkbox" />
-                  Meal included
-                </label>
+                {items.map((item, index) => (
+                  <label key={index} className="label text-base mr-3">
+                    <input
+                      type="checkbox"
+                      className="checkbox"
+                      {...register("perks", {
+                        required: "Select at least one perk",
+                      })}
+                    />
+                    <span>{item}</span>
+                  </label>
+                ))}
+
                 {errors.perks && (
-                  <p className="text-red-400 text-xs">{errors.perks.message}</p>
+                  <p className="text-red-400 text-xs mt-2">
+                    {errors.perks.message}
+                  </p>
                 )}
               </div>
               <button className="btn btn-neutral mt-4">Add Ticket</button>
