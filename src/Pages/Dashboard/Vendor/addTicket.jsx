@@ -3,34 +3,87 @@ import Container from "../../Shared/Container";
 import { useForm } from "react-hook-form";
 import { imageUpload } from "../../../utils";
 import useAuth from "../../../hooks/useAuth";
+import axios from "axios";
+import { useMutation } from "@tanstack/react-query";
+import Loading from "../../../Components/Loading/Loading";
+import toast from "react-hot-toast";
+import Error from "../../../Components/Error/Error";
 
 const AddTicket = () => {
   const { user } = useAuth();
+
+  // useMutation hook useCase
+  const {
+    isPending,
+    isError,
+    mutateAsync,
+    reset: mutationReset,
+  } = useMutation({
+    mutationFn: async (payload) => {
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/tickets`,
+        payload
+      );
+      return res.data;
+    },
+    onSuccess: (data) => {
+      console.log(data);
+      toast.success("Ticket added successfully!");
+      mutationReset();
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+    onMutate: (payload) => {
+      console.log("I will post this data", payload);
+    },
+    onSettled: (data, error) => {
+      // if (data) console.log(data);
+      console.log("I am form settled ->", data)
+      if (error) console.log(error);
+    },
+    retry: 3,
+  });
+
   const {
     register,
     handleSubmit,
     watch,
+    reset,
     formState: { errors },
   } = useForm();
   const onSubmit = async (data) => {
     const { image, title, transport, price, quantity, perks } = data;
     const imageFile = image[0];
-    const imageURL = await imageUpload(imageFile);
-    const ticketData = {
-      image: imageURL,
-      title,
-      transport,
-      price: Number(price),
-      quantity: Number(quantity),
-      perks,
-      seller: {
-        image: user?.photoURL,
-        name: user?.displayName,
-        email: user?.email,
-      },
-    };
-    console.table(ticketData);
+
+    try {
+      const imageURL = await imageUpload(imageFile);
+      const ticketData = {
+        image: imageURL,
+        title,
+        transport,
+        price: Number(price),
+        quantity: Number(quantity),
+        perks,
+        seller: {
+          image: user?.photoURL,
+          name: user?.displayName,
+          email: user?.email,
+        },
+      };
+      await mutateAsync(ticketData);
+      reset();
+    } catch (err) {
+      console.log(err);
+    }
+    // console.table(ticketData);
   };
+  if (isPending) {
+    return <Loading></Loading>;
+  }
+  if (isError) {
+    return <Error></Error>;
+  }
   const items = ["Free cancellation", "AC Seat", "Meal included"];
   return (
     <Container>
